@@ -11,7 +11,7 @@ Brief project description here.
 3. Use the `git clone` command to clone the repository into your local folder:
 
    ```bash
-   git clone https://github.com/MariaPadalka/F12.git
+   git clone https://github.com/HoshkoS/F12_2.git
    
 ## Project Presentation
 You can find the project presentation and concept in the "Documents" folder of this repository. It provides an overview of the project's goals and ideas.
