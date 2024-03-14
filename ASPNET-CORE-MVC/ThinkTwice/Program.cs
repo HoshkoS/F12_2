@@ -1,3 +1,5 @@
+using ThinkTwice.Extensions;
+
 namespace ThinkTwice
 {
     public class Program
@@ -8,7 +10,7 @@ namespace ThinkTwice
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddSerilog();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
