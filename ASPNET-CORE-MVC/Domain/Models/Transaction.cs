@@ -1,33 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Domain.Models;
 
-namespace Domain.Models
+public class Transaction
 {
-    public class Transaction
-    {
-        public Guid Id { get; set; }
+    public Guid Id { get; set; }
 
-        public Guid UserId { get; set; }
+    public Guid UserId { get; set; }
 
-        public Guid? FromCategory { get; set; }
+    public Guid? FromCategory { get; set; }
 
-        public Guid? ToCategory { get; set; }
+    public Guid? ToCategory { get; set; }
 
-        public decimal Amount { get; set; }
+    public decimal Amount { get; set; }
 
-        public DateTime? Date { get; set; }
+    public DateTime? Date { get; set; }
 
-        public string? Details { get; set; }
+    public string? Details { get; set; }
 
-        public bool Planned { get; set; }
-
-        public virtual Category? FromCategoryNavigation { get; set; }
-
-        public virtual Category? ToCategoryNavigation { get; set; }
-
-        public virtual User User { get; set; } = null!;
-    }
+    public bool Planned { get; set; }
 }
