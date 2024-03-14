@@ -1,4 +1,5 @@
 using ThinkTwice.Extension;
+using ThinkTwice.Extensions;
 
 namespace ThinkTwice;
 
@@ -12,6 +13,7 @@ public class Program
         builder.AddServerDbContext();
         builder.Services.AddControllersWithViews();
         builder.Services.AddUnitOfWork();
+        builder.Services.AddSerilog();
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
