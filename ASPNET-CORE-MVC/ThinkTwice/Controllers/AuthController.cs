@@ -1,12 +1,8 @@
-using System.Diagnostics;
+using Domain.Models;
 using Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using ThinkTwice.Models;
-using ILogger = Serilog.ILogger;
 using ThinkTwice.Dtos;
-using Domain.Models;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
+using ILogger = Serilog.ILogger;
 
 namespace ThinkTwice.Controllers;
 
@@ -35,11 +31,6 @@ public class AuthController : Controller
     {
         return View();
     }
-
-    public ActionResult Details(int id)
-    {
-        return View();
-    }
     
     [HttpPost]
     public ActionResult CreateUser(RegisterUserDto user)
@@ -50,7 +41,7 @@ public class AuthController : Controller
             Password = user.Password,
             Name = user.Name,
             Surname = user.Surname,
-            Currency = "UAH"
+            Currency = "UAH",
         };
         _unitOfWork.Users.Add(newUser);
         _unitOfWork.Complete();
