@@ -1,6 +1,12 @@
-﻿using Domain.Repositories;
+using System.Diagnostics;
+using Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using ThinkTwice.Models;
 using ILogger = Serilog.ILogger;
+using ThinkTwice.Dtos;
+using Domain.Models;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace ThinkTwice.Controllers;
 
@@ -8,14 +14,13 @@ public class AuthController : Controller
 {
     private readonly ILogger _logger;
     private readonly IUnitOfWork _unitOfWork;
+    
     public AuthController(ILogger logger, IUnitOfWork unitOfWork)
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
     }
-
-
-    // GET: AuthController
+    
     public ActionResult Index()
     {
         return View();
@@ -26,19 +31,33 @@ public class AuthController : Controller
         return View();
     }
 
-    // GET: AuthController/Details/5
     public ActionResult Details(int id)
     {
         return View();
     }
 
-    // GET: AuthController/Create
-    public ActionResult Create()
+    public ActionResult Details(int id)
     {
         return View();
     }
+    
+    [HttpPost]
+    public ActionResult CreateUser(RegisterUserDto user)
+    {
+        User newUser = new User
+        {
+            Email = user.Email,
+            Password = user.Password,
+            Name = user.Name,
+            Surname = user.Surname,
+            Currency = "UAH"
+        };
+        _unitOfWork.Users.Add(newUser);
+        _unitOfWork.Complete();
+        _logger.Error(user.Surname);
+        return RedirectToAction("Login", "Auth");
+    }
 
-    // POST: AuthController/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult Create(IFormCollection collection)
@@ -53,13 +72,11 @@ public class AuthController : Controller
         }
     }
 
-    // GET: AuthController/Edit/5
     public ActionResult Edit(int id)
     {
         return View();
     }
 
-    // POST: AuthController/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult Edit(int id, IFormCollection collection)
@@ -73,14 +90,12 @@ public class AuthController : Controller
             return View();
         }
     }
-
-    // GET: AuthController/Delete/5
+    
     public ActionResult Delete(int id)
     {
         return View();
     }
 
-    // POST: AuthController/Delete/5
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult Delete(int id, IFormCollection collection)
