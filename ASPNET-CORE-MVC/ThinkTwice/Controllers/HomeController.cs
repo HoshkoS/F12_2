@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using Domain.Models;
 using Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using ThinkTwice.Models;
@@ -20,18 +19,15 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        var user = new User()
-        {
-            Name = "Andrii", Email = "andrii2353@gmail.com", Currency = "UAH", Password = "password123",
-            Surname = "Savka"
-        };
-        _unitOfWork.Users.Add(user);
-        _logger.Error("This is serilog to seq demo.");
-        _unitOfWork.Complete();
         return View();
     }
 
     public IActionResult Privacy()
+    {
+        return View();
+    }
+
+    public IActionResult SignUp()
     {
         return View();
     }
