@@ -6,6 +6,7 @@
 
 .input {
     margin: 5px;
+    border-width: 2px;
     border-radius: 10px;
     border-color: lightgray;
 }
@@ -18,4 +19,20 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+.currency_selector {
+    border: none;
+    background-color: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    border-left: none;
+    background-color: transparent;
+}
+.currency_selector:focus {
+    outline: none;
+}
+.currency_label{
+    color: gray;
 }

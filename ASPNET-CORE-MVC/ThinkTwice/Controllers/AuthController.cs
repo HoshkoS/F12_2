@@ -1,28 +1,44 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using ILogger = Serilog.ILogger;
 
 namespace ThinkTwice.Controllers;
 
-public class SignUpController : Controller
+public class AuthController : Controller
 {
-    // GET: SignUpController
+    private readonly ILogger _logger;
+    private readonly IUnitOfWork _unitOfWork;
+    public AuthController(ILogger logger, IUnitOfWork unitOfWork)
+    {
+        _logger = logger;
+        _unitOfWork = unitOfWork;
+    }
+
+
+    // GET: AuthController
     public ActionResult Index()
     {
         return View();
     }
 
-    // GET: SignUpController/Details/5
+    public ActionResult SignUp()
+    {
+        return View();
+    }
+
+    // GET: AuthController/Details/5
     public ActionResult Details(int id)
     {
         return View();
     }
 
-    // GET: SignUpController/Create
+    // GET: AuthController/Create
     public ActionResult Create()
     {
         return View();
     }
 
-    // POST: SignUpController/Create
+    // POST: AuthController/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult Create(IFormCollection collection)
@@ -37,13 +53,13 @@ public class SignUpController : Controller
         }
     }
 
-    // GET: SignUpController/Edit/5
+    // GET: AuthController/Edit/5
     public ActionResult Edit(int id)
     {
         return View();
     }
 
-    // POST: SignUpController/Edit/5
+    // POST: AuthController/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult Edit(int id, IFormCollection collection)
@@ -58,13 +74,13 @@ public class SignUpController : Controller
         }
     }
 
-    // GET: SignUpController/Delete/5
+    // GET: AuthController/Delete/5
     public ActionResult Delete(int id)
     {
         return View();
     }
 
-    // POST: SignUpController/Delete/5
+    // POST: AuthController/Delete/5
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult Delete(int id, IFormCollection collection)
