@@ -1,32 +1,44 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using Domain.Models;
+using Domain.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using ThinkTwice.Models;
+using ILogger = Serilog.ILogger;
 
-namespace ThinkTwice.Controllers
+namespace ThinkTwice.Controllers;
+
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    private readonly ILogger _logger;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public HomeController(ILogger logger, IUnitOfWork unitOfWork)
     {
-        private readonly ILogger<HomeController> _logger;
+        _logger = logger;
+        _unitOfWork = unitOfWork;
+    }
 
-        public HomeController(ILogger<HomeController> logger)
+    public IActionResult Index()
+    {
+        var user = new User()
         {
-            _logger = logger;
-        }
+            Name = "Andrii", Email = "andrii2353@gmail.com", Currency = "UAH", Password = "password123",
+            Surname = "Savka"
+        };
+        _unitOfWork.Users.Add(user);
+        _logger.Error("This is serilog to seq demo.");
+        _unitOfWork.Complete();
+        return View();
+    }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+    public IActionResult Privacy()
+    {
+        return View();
+    }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

@@ -17,4 +17,9 @@ public static class ServiceExtensions
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
+
+    public static void AddSerilog(this IServiceCollection services)
+    {
+        services.AddLogging(loggingBuilder => { loggingBuilder.AddSeq(); });
+    }
 }

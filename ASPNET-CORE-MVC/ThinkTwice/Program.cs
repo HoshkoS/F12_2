@@ -1,5 +1,5 @@
+using Serilog;
 using ThinkTwice.Extension;
-using ThinkTwice.Extensions;
 
 namespace ThinkTwice;
 
@@ -11,9 +11,16 @@ public class Program
 
         // Add services to the container.
         builder.AddServerDbContext();
+        builder.Host.UseSerilog((context, configuration) =>
+        {
+            configuration
+                .WriteTo.Console()
+                .WriteTo.Seq("http://localhost:5341");
+        });
         builder.Services.AddControllersWithViews();
         builder.Services.AddUnitOfWork();
-        builder.Services.AddSerilog();
+
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
