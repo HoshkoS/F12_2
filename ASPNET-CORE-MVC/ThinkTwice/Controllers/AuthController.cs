@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using ThinkTwice.Models;
@@ -14,32 +14,33 @@ public class AuthController : Controller
 {
     private readonly ILogger _logger;
     private readonly IUnitOfWork _unitOfWork;
-
+    
     public AuthController(ILogger logger, IUnitOfWork unitOfWork)
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
     }
+    
     public ActionResult Index()
     {
         return View();
     }
 
-    public IActionResult SignUp()
+    public ActionResult SignUp()
     {
         return View();
     }
 
-    public IActionResult Login()
-    {
-        return View();
-    }
-
-    // GET: SignUpController/Details/5
     public ActionResult Details(int id)
     {
         return View();
     }
+
+    public ActionResult Details(int id)
+    {
+        return View();
+    }
+    
     [HttpPost]
     public ActionResult CreateUser(RegisterUserDto user)
     {
@@ -57,7 +58,6 @@ public class AuthController : Controller
         return RedirectToAction("Login", "Auth");
     }
 
-    // POST: SignUpController/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult Create(IFormCollection collection)
@@ -72,13 +72,11 @@ public class AuthController : Controller
         }
     }
 
-    // GET: SignUpController/Edit/5
     public ActionResult Edit(int id)
     {
         return View();
     }
 
-    // POST: SignUpController/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult Edit(int id, IFormCollection collection)
@@ -92,14 +90,12 @@ public class AuthController : Controller
             return View();
         }
     }
-
-    // GET: SignUpController/Delete/5
+    
     public ActionResult Delete(int id)
     {
         return View();
     }
 
-    // POST: SignUpController/Delete/5
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult Delete(int id, IFormCollection collection)
