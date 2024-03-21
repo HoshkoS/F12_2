@@ -1,11 +1,36 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Diagnostics;
+using Domain.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using ThinkTwice.Models;
+using ILogger = Serilog.ILogger;
+using ThinkTwice.Dtos;
+using Domain.Models;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace ThinkTwice.Controllers;
 
-public class SignUpController : Controller
+public class AuthController : Controller
 {
-    // GET: SignUpController
+    private readonly ILogger _logger;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public AuthController(ILogger logger, IUnitOfWork unitOfWork)
+    {
+        _logger = logger;
+        _unitOfWork = unitOfWork;
+    }
     public ActionResult Index()
+    {
+        return View();
+    }
+
+    public IActionResult SignUp()
+    {
+        return View();
+    }
+
+    public IActionResult Login()
     {
         return View();
     }
@@ -15,11 +40,21 @@ public class SignUpController : Controller
     {
         return View();
     }
-
-    // GET: SignUpController/Create
-    public ActionResult Create()
+    [HttpPost]
+    public ActionResult CreateUser(RegisterUserDto user)
     {
-        return View();
+        User newUser = new User
+        {
+            Email = user.Email,
+            Password = user.Password,
+            Name = user.Name,
+            Surname = user.Surname,
+            Currency = "UAH"
+        };
+        _unitOfWork.Users.Add(newUser);
+        _unitOfWork.Complete();
+        _logger.Error(user.Surname);
+        return RedirectToAction("Login", "Auth");
     }
 
     // POST: SignUpController/Create

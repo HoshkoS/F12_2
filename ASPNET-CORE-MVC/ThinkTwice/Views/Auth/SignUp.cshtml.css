@@ -1,0 +1,21 @@
+﻿.sign_up_window{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input {
+    margin: 5px;
+    border-radius: 10px;
+    border-color: lightgray;
+}
+
+.input:focus{
+    outline: none;
+}
+.form-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
