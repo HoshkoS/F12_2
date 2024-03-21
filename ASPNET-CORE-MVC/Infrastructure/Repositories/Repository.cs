@@ -28,7 +28,6 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         return _context.Set<TEntity>().Select(predicate);
     }
 
-
     public TEntity? Get(int id)
     {
         return _context.Set<TEntity>().Find(id);
