@@ -38,7 +38,7 @@ public class AuthController : Controller
     }
     
     [HttpPost]
-    public ActionResult CreateUser(RegisterUserDto user)
+    public ActionResult CreateUser(RegisterUserDTO user)
     {
         User newUser = new User
         {

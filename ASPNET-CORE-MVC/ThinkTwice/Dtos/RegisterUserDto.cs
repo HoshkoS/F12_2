@@ -1,6 +1,6 @@
 ﻿namespace ThinkTwice.Dtos
 {
-    public class RegisterUserDto
+    public class RegisterUserDTO
     {
         public string Name { get; set; }
         public string Surname { get; set; }
