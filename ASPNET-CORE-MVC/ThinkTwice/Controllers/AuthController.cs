@@ -1,8 +1,14 @@
 using Domain.Models;
 using Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using ThinkTwice.Dtos;
+using ThinkTwice.Models;
 using ILogger = Serilog.ILogger;
+using Domain.Dtos.UserDtos;
+using Domain.Models;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
+using Domain.Services.UserService;
+using Infrastructure.Repositories;
 
 namespace ThinkTwice.Controllers;
 
@@ -10,11 +16,13 @@ public class AuthController : Controller
 {
     private readonly ILogger _logger;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserService _userService;
     
-    public AuthController(ILogger logger, IUnitOfWork unitOfWork)
+    public AuthController(ILogger logger, IUnitOfWork unitOfWork, IUserService userService)
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
+        _userService = userService;
     }
     
     public ActionResult Index()
@@ -38,19 +46,9 @@ public class AuthController : Controller
     }
     
     [HttpPost]
-    public ActionResult CreateUser(RegisterUserDTO user)
+    public ActionResult CreateUser(RegisterUserDto user)
     {
-        User newUser = new User
-        {
-            Email = user.Email,
-            Password = user.Password,
-            Name = user.Name,
-            Surname = user.Surname,
-            Currency = "UAH",
-        };
-        _unitOfWork.Users.Add(newUser);
-        _unitOfWork.Complete();
-        _logger.Error(user.Surname);
+        _userService.createUser(user);
         return RedirectToAction("Login", "Auth");
     }
 

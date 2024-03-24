@@ -1,9 +1,12 @@
 ﻿using System.Diagnostics;
 using Domain.Models;
 using Domain.Repositories;
+using Domain.Services.UserService;
+using Domain.Services.CategoryService;
 using Microsoft.AspNetCore.Mvc;
 using ThinkTwice.Models;
 using ILogger = Serilog.ILogger;
+using Domain.Dtos.CategoryDtos;
 
 namespace ThinkTwice.Controllers;
 
@@ -11,43 +14,16 @@ public class HomeController : Controller
 {
     private readonly ILogger _logger;
     private readonly IUnitOfWork _unitOfWork;
-    static public User currentUser = new User
-    {
-        Id = Guid.Parse("3ABAA456-0B8E-49E0-A6E9-1B79DBA2E38F"),
-        Email = "olena@lnu.edu",
-        Password = "123456789",
-        Name = "Olena",
-        Surname = "Hoshko",
-        BirthDate = DateTime.Now,
-        Currency = "UAH",
-        Categories = new Category[]
-        {
-            new Category
-            {
-                Id = Guid.NewGuid(),
-                UserId = Guid.Parse("3ABAA456-0B8E-49E0-A6E9-1B79DBA2E38F"),
-                Title = "Salary",
-                IsGeneral = false,
-                PercentageAmount = 0,
-                Type = "Income",
-            },
+    private readonly IUserService _userService;
+    private readonly ICategoryService _categoryService;
+    public static Guid CurrentUserId;
 
-            new Category
-            {
-                Id = Guid.NewGuid(),
-                UserId = Guid.Parse("3ABAA456-0B8E-49E0-A6E9-1B79DBA2E38F"),
-                Title = "Food",
-                IsGeneral = false,
-                PercentageAmount = 0,
-                Type = "Expences",
-            },
-        },
-    };
-
-    public HomeController(ILogger logger, IUnitOfWork unitOfWork)
+    public HomeController(ILogger logger, IUnitOfWork unitOfWork, IUserService userService, ICategoryService categoryService)
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
+        _userService = userService;
+        _categoryService = categoryService;
     }
 
     public IActionResult Index()
@@ -62,6 +38,8 @@ public class HomeController : Controller
 
     public IActionResult Settings()
     {
+        CurrentUserId = Guid.Parse("3ABAA456-0B8E-49E0-A6E9-1B79DBA2E38F");
+        var currentUser = _userService.getUser(CurrentUserId);
         return View(currentUser);
     }
 
@@ -71,19 +49,19 @@ public class HomeController : Controller
     //}
 
 
+
     [HttpPost]
-    public ActionResult CreateCategory(string Title, string Type, decimal Percentage)
+    public ActionResult CreateCategory(CategoryDto category)
     {
-        Category cat = new Category
-        {
-            Title = Title,
-            Type = Type,
-            PercentageAmount = Percentage,
-            UserId = currentUser.Id,
-        };
-        _unitOfWork.Categories.Add(cat);
-        _unitOfWork.Complete();
-        _logger.Error(cat.Title);
+        //CategoryDto cat = new CategoryDto
+        //{
+        //    Title = category.Title,
+        //    Type = category.Type,
+        //    PercentageAmount = category.PercentageAmount,
+        //    UserId = CurrentUserId,
+        //};
+        _categoryService.createCategory(category);
+        _logger.Error(category.Title);
         return RedirectToAction("Settings", "Home");
     }
 

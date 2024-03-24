@@ -1,6 +1,10 @@
 ﻿using Domain.Repositories;
+using Domain.Services.CategoryService;
+using Domain.Services.UserService;
 using Infrastructure.Database;
 using Infrastructure.Repositories;
+using Infrastructure.Services.UserService;
+using Infrastructure.Services.CategoryService;
 using Microsoft.EntityFrameworkCore;
 
 namespace ThinkTwice.Extension;
@@ -21,5 +25,11 @@ public static class ServiceExtensions
     public static void AddSerilog(this IServiceCollection services)
     {
         services.AddLogging(loggingBuilder => { loggingBuilder.AddSeq(); });
+    }
+
+    public static void AddServices(this IServiceCollection services)
+    {
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<ICategoryService, CategoryService>();
     }
 }

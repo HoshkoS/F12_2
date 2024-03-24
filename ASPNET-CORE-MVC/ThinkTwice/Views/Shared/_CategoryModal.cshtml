@@ -1,0 +1,149 @@
+﻿using
+@{
+    ViewData["Title"] = "SignUp";
+}
+@model ThinkTwice.Dtos.RegisterUserDTO
+<!-- Button to open the modal -->
+<button id="openModalBtn">Open Registration Modal</button>
+
+<!-- The modal -->
+<div id="registrationModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        @using (Html.BeginForm("CreateUser", "Auth", FormMethod.Post, new { id = "registrationForm" }))
+        {
+            <div>
+                @Html.LabelFor(m => m.Name)
+                @Html.TextBoxFor(m => m.Name)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.Surname)
+                @Html.TextBoxFor(m => m.Surname)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.Email)
+                @Html.TextBoxFor(m => m.Email)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.PasswordRepeat)
+                @Html.PasswordFor(m => m.PasswordRepeat)
+            </div>
+            <button type="submit">Register</button>
+        }
+    </div>
+</div>
+
+<!-- CSS styles for the modal -->
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 600px;
+        position: relative;
+    }
+
+    .close {
+        position: absolute;
+        right: 10px;
+        top: 5px;
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+</style>
+
+<!-- JavaScript to handle modal functionality -->
+<script>
+    // Get the modal
+    var modal = document.getElementById("registrationModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("openModalBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on the button, open the modal
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+
+@*
+@{
+    ViewData["Title"] = "SignUp";
+}
+<div class="sign_up_window">
+    <form class = "form-content">
+        <img src="/Assets/Images/bar_chart_growth_logo.png" alt="alt text" />
+        <h1>Реєстрація</h1>
+        <div class="textBox">
+            <input class="input" placeholder = "Ім'я" data-val="true" id="a" value=""/>
+            <br/>
+            <input class="input" placeholder="Прізвище" data-val="true" id="b" value=""/>
+            <br/>
+            <input class="input" placeholder="Email" data-val="true" id="c" value=""/>
+            <br/>
+            <input class="input" placeholder="Пароль" data-val="true" id="d"  value=""/>
+            <br/>
+            <input class="input" placeholder="Підтвердіть пароль"  data-val="true" id="e"  value=""/>
+            <br/>
+            <input type="text" class="input" placeholder="Дата народження" id="birthdate" name="birthdate" value=""/>
+
+            <br/>
+            <div style="position: relative;" class="input">
+              <label class="currency_label"> Валюта </label>
+              <select class="currency_selector" id="currency" name="currency">
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">UAH</option>
+                <!-- Додайте інші валюти за потребою -->
+              </select>
+            </div>
+            <br/>
+            <button id="submit" type="submit" value="Submit" onclick="btnSubmit_Click()"
+                    class="btn btn-primary" runat="server">Зареєструватись</button>
+        </div>
+    </form>
+</div>
+*@
