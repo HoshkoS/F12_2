@@ -16,6 +16,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     public void Add(TEntity entity)
     {
         _context.Add(entity);
+        _context.SaveChanges();
     }
 
     public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
