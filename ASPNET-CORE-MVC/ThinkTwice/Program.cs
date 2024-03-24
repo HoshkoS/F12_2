@@ -19,6 +19,7 @@ public class Program
         });
         builder.Services.AddControllersWithViews();
         builder.Services.AddUnitOfWork();
+        builder.Services.AddServices();
 
 
         var app = builder.Build();
