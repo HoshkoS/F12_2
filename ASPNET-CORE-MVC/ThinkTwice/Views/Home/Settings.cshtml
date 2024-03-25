@@ -67,22 +67,27 @@
                         <span style="color: #011140; padding: 5px;">Categories:</span>
                     </div>
                 </div>
+                <div style="display: flex; flex-wrap: wrap;">
+                    @foreach (var category in Model.Categories)
+                    {
+                        <div style="margin: 0 3px; height: auto; background-color: #A8B2C0; display: grid;">
+                            <div style="display: grid; grid-template-columns: auto 2fr 5fr;">
+                                <div style="border: 1px solid LightGray; border-radius: 2px; background-color: white; margin: 7px; display:inline-flex">
+                                    <input type="text" id="@category.Title" placeholder="@category.Title" name="textBoxTitle" style="font-size: 18px; vertical-align: middle; width: 100%;" disabled>
+                                    <form asp-action="DeleteCategory" method="post">
+                                        <input type="hidden" asp-for="@category.Title" />
+                                        <input type="hidden" asp-for="@category.UserId" />
+                                        <button type="submit" class="btn-delete">&times;</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
             </div>
 
-            <!-- Display categories -->
-            @foreach (var category in Model.Categories)
-            {
-                <div style="grid-row: auto; margin: 0 3px; height: auto; background-color: #A8B2C0; display: grid;">
-                    <div style="display: grid; grid-template-columns: 2fr 5fr;">
-                        <div style="border: 1px solid LightGray; border-radius: 2px; background-color: white; margin: 7px;">
-                            <input type="text" placeholder="@category.Title" name="textBoxTitle" style="font-size: 18px; vertical-align: middle; width: 100%;" disabled>
-                        </div>
-                    </div>
-                </div>
-            }
         </div>
     </div>
-
 </div>
 
 <button id="openModalButton">Створити категорію</button>

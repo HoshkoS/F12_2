@@ -57,5 +57,6 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     public void Remove(TEntity entity)
     {
         _context.Remove(entity);
+        _context.SaveChanges();
     }
 }

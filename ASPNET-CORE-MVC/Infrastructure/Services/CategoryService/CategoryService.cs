@@ -17,7 +17,7 @@ namespace Infrastructure.Services.CategoryService
 {
     public class CategoryService: ICategoryService
     {
-        private readonly CategoryRepository categoryRepository;
+        private readonly CategoryRepository _categoryRepository;
         private readonly ILogger _logger;
         private readonly ServerDbContext _context;
 
@@ -25,7 +25,7 @@ namespace Infrastructure.Services.CategoryService
         {
             _context = context;
             _logger = logger;
-            categoryRepository = new CategoryRepository(_context);
+            _categoryRepository = new CategoryRepository(_context);
         }
 
         public async Task<Category> createCategory(CategoryDto category)
@@ -38,7 +38,7 @@ namespace Infrastructure.Services.CategoryService
                 UserId = category.UserId,
                 IsGeneral = category.IsGeneral,
             };
-            categoryRepository.Add(newCategory);
+            _categoryRepository.Add(newCategory);
             return await Task.FromResult(newCategory);
         }
 
@@ -53,11 +53,7 @@ namespace Infrastructure.Services.CategoryService
                     throw new Exception($"Categories for user with ID {UserId} not found.");
                 }
 
-                //var userDto = new UserDto(user);
-
-                //return userDto;
-                return _categoryRepository.GetAll().ToList();
-
+                return categories.ToList();
             }
             catch (Exception ex)
             {
@@ -66,21 +62,22 @@ namespace Infrastructure.Services.CategoryService
             }
         }
 
-        public void removeCategory(Guid CategoryId)
+        public void removeCategory(CategoryDto category)
         {
             try
             {
-                var category = _categoryRepository.FirstOrDefault(c => c.Id == CategoryId);
-                if (category != null)
+                var categoryToRemove = _categoryRepository.FirstOrDefault(c => c.Title == category.Title && c.UserId == category.UserId);
+                if (categoryToRemove == null)
                 {
-                    _logger.Error($"Category with ID {CategoryId} not found.");
-                    throw new Exception($"Category with ID {CategoryId} not found.");
+                    _logger.Error($"Category with title {category.Title} not found.");
+                    throw new Exception($"Category with title {category.Title} not found.");
                 }
-                _categoryRepository.Remove(category);
+
+                _categoryRepository.Remove(categoryToRemove);
             }
             catch (Exception ex)
             {
-                _logger.Error($"Error occurred while getting category with ID {CategoryId}: {ex.Message}");
+                _logger.Error($"Error occurred while getting category with title {category.Title}: {ex.Message}");
                 throw;
             }
         }

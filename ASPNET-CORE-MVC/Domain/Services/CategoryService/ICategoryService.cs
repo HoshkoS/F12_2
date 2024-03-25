@@ -15,6 +15,6 @@ namespace Domain.Services.CategoryService
 
         ICollection<Category> getUserCategories(Guid UserId);
 
-        void removeCategory(Guid CategoryId);
+        void removeCategory(CategoryDto category);
     }
 }
