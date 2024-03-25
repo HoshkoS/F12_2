@@ -16,7 +16,7 @@ namespace Infrastructure.Services.CategoryService
 {
     public class CategoryService: ICategoryService
     {
-        private readonly CategoryRepository _categoryRepository;
+        private readonly CategoryRepository categoryRepository;
         private readonly ILogger _logger;
         private readonly ServerDbContext _context;
 
@@ -24,7 +24,7 @@ namespace Infrastructure.Services.CategoryService
         {
             _context = context;
             _logger = logger;
-            _categoryRepository = new CategoryRepository(_context);
+            categoryRepository = new CategoryRepository(_context);
         }
 
         public async Task<Category> createCategory(CategoryDto category)
@@ -37,7 +37,7 @@ namespace Infrastructure.Services.CategoryService
                 UserId = category.UserId,
                 IsGeneral = category.IsGeneral,
             };
-            _categoryRepository.Add(newCategory);
+            categoryRepository.Add(newCategory);
             return await Task.FromResult(newCategory);
         }
     }
