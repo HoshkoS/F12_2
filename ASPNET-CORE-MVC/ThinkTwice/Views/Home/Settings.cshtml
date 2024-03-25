@@ -7,63 +7,65 @@
     Layout = null;
 }
 
+<link rel="stylesheet" href="~/css/Settings.css" />
+
 <div>
     <div style="grid-row: 1; vertical-align: top; grid-column-span: 2;">
         <div style="display: grid; grid-template-rows: auto auto auto auto auto 3fr 0.5fr;">
-            <div style="grid-row: 1; margin: 0 3px; height: auto; background-color: #A8B2C0; display: grid;">
-                <div style="display: grid; grid-template-columns: 2fr 5fr;">
-                    <div style="align-self: center; justify-self: left; height: auto; max-height: 40px; margin: 8px;">
+            <div style="grid-row: 1;" class="user-info">
+                <div class="user-info-inner">
+                    <div class="user-info-title">
                         <span style="color: #011140; padding: 5px;">Ім'я:</span>
                     </div>
-                    <div style="border: 1px solid LightGray; border-radius: 2px; background-color: white; margin: 7px;">
-                        <input type="text" placeholder=@Model.Name disabled name="textBoxName" style="font-size: 18px; vertical-align: middle; width: 100%;">
+                    <div class="user-info-value">
+                        <input type="text" placeholder=@Model.Name disabled name="textBoxName" disabled>
                     </div>
                 </div>
             </div>
-            <div style="grid-row: 2; margin: 0 3px; height: auto; background-color: #A8B2C0; display: grid;">
-                <div style="display: grid; grid-template-columns: 2fr 5fr;">
-                    <div style="align-self: center; justify-self: left; height: auto; max-height: 40px; margin: 8px;">
+            <div style="grid-row: 2;" class="user-info">
+                <div class="user-info-inner">
+                    <div class="user-info-title">
                         <span style="color: #011140; padding: 5px;">Прізвище:</span>
                     </div>
-                    <div style="border: 1px solid LightGray; border-radius: 2px; background-color: white; margin: 7px;">
-                        <input type="text" placeholder=@Model.Surname disabled name="textBoxSurname" style="font-size: 18px; vertical-align: middle; width: 100%;">
+                    <div class="user-info-value">
+                        <input type="text" placeholder=@Model.Surname disabled name="textBoxSurname" disabled>
                     </div>
                 </div>
             </div>
-            <div style="grid-row: 3; margin: 0 3px; height: auto; background-color: #A8B2C0; display: grid;">
-                <div style="display: grid; grid-template-columns: 2fr 5fr;">
-                    <div style="align-self: center; justify-self: left; height: auto; max-height: 40px; margin: 8px;">
+            <div style="grid-row: 3;" class="user-info">
+                <div class="user-info-inner">
+                    <div class="user-info-title">
                         <span style="color: #011140; padding: 5px;">Ел.адреса:</span>
                     </div>
-                    <div style="border: 1px solid LightGray; border-radius: 2px; background-color: white; margin: 7px;">
-                        <input type="text" placeholder=@Model.Email name="textBoxEmail" style="font-size: 18px; vertical-align: middle; width: 100%;" disabled>
+                    <div class="user-info-value">
+                        <input type="text" placeholder=@Model.Email name="textBoxEmail" disabled>
                     </div>
                 </div>
             </div>
-            <div style="grid-row: 4; margin: 0 3px; height: auto; background-color: #A8B2C0; display: grid;">
-                <div style="display: grid; grid-template-columns: 2fr 5fr;">
-                    <div style="align-self: center; justify-self: left; height: auto; max-height: 40px; margin: 8px;">
+            <div style="grid-row: 4;" class="user-info">
+                <div class="user-info-inner">
+                    <div class="user-info-title">
                         <span style="color: #011140; padding: 5px;">Дата народження:</span>
                     </div>
-                    <div style="border: 1px solid LightGray; border-radius: 3px; background-color: white; margin: 7px;">
-                        <input type="text" placeholder=@Model.BirthDate name="datePickerBirthdate" style="font-size: 18px; vertical-align: middle; width: auto;" disabled>
+                    <div class="user-info-value">
+                        <input type="text" placeholder=@Model.BirthDate name="datePickerBirthdate" disabled>
                     </div>
                 </div>
             </div>
-            <div style="grid-row: 5; margin: 0 3px; height: auto; background-color: #A8B2C0; display: grid;">
-                <div style="display: grid; grid-template-columns: 2fr 5fr;">
-                    <div style="align-self: center; justify-self: left; height: auto; max-height: 40px; margin: 8px;">
+            <div style="grid-row: 5;" class="user-info">
+                <div class="user-info-inner">
+                    <div class="user-info-title">
                         <span style="color: #011140; padding: 5px;">Валюта:</span>
                     </div>
-                    <div style="border: 1px solid LightGray; border-radius: 2px; background-color: white; margin: 7px;">
-                        <input type="text" placeholder=@Model.Currency name="textBoxCurrency" style="font-size: 18px; vertical-align: middle; width: 100%;" disabled>
+                    <div class="user-info-value">
+                        <input type="text" placeholder=@Model.Currency name="textBoxCurrency" disabled>
                     </div>
                 </div>
             </div>
 
-            <div style="grid-row: auto; margin: 0 3px; height: auto; background-color: #A8B2C0; display: grid;">
-                <div style="display: grid; grid-template-columns: 2fr 5fr;">
-                    <div style="align-self: center; justify-self: left; height: auto; max-height: 40px; margin: 8px;">
+            <div style="grid-row: auto;" class="user-info">
+                <div class="user-info-inner">
+                    <div class="user-info-title">
                         <span style="color: #011140; padding: 5px;">Categories:</span>
                     </div>
                 </div>
@@ -72,12 +74,12 @@
                     {
                         <div style="margin: 0 3px; height: auto; background-color: #A8B2C0; display: grid;">
                             <div style="display: grid; grid-template-columns: auto 2fr 5fr;">
-                                <div style="border: 1px solid LightGray; border-radius: 2px; background-color: white; margin: 7px; display:inline-flex">
-                                    <input type="text" id="@category.Title" placeholder="@category.Title" name="textBoxTitle" style="font-size: 18px; vertical-align: middle; width: 100%;" disabled>
+                                <div class="user-info-value" style="display:inline-flex">
+                                    <input type="text" id="@category.Title" placeholder="@category.Title" name="textBoxTitle" disabled>
                                     <form asp-action="DeleteCategory" method="post">
                                         <input type="hidden" asp-for="@category.Title" />
                                         <input type="hidden" asp-for="@category.UserId" />
-                                        <button type="submit" class="btn-delete">&times;</button>
+                                        <button type="submit">&times;</button>
                                     </form>
                                 </div>
                             </div>
@@ -85,7 +87,6 @@
                     }
                 </div>
             </div>
-
         </div>
     </div>
 </div>

@@ -1,0 +1,35 @@
+﻿body {
+}
+
+.user-info {
+    margin: 0 3px;
+    height: auto;
+    background-color: #A8B2C0;
+    display: grid;
+}
+
+.user-info-inner {
+    display: grid;
+    grid-template-columns: 2fr 5fr;
+}
+
+.user-info-title {
+    align-self: center;
+    justify-self: left;
+    height: auto;
+    max-height: 40px;
+    margin: 8px;
+}
+
+.user-info-value {
+    border: 1px solid LightGray;
+    border-radius: 2px;
+    background-color: white;
+    margin: 7px
+}
+
+.user-info-value input {
+    font-size: 18px;
+    vertical-align: middle;
+    width: 100%;
+}
