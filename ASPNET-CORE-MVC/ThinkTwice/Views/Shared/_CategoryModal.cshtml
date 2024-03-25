@@ -22,7 +22,11 @@
             </div>
             <div>
                 @Html.LabelFor(m => m.Type)
-                @Html.TextBoxFor(m => m.Type)
+                <select id="typeSelect" asp-for="Type">
+                    <option value="Дохід">Дохід</option>
+                    <option value="Баланс">Баланс</option>
+                    <option value="Витрати">Витрати</option>
+                </select>
             </div>
             <div>
                 @Html.LabelFor(m => m.PercentageAmount)
