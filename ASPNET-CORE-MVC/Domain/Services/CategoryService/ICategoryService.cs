@@ -12,5 +12,9 @@ namespace Domain.Services.CategoryService
     public interface ICategoryService
     {
         Task<Category> createCategory(CategoryDto category);
+
+        ICollection<Category> getUserCategories(Guid UserId);
+
+        void removeCategory(Guid CategoryId);
     }
 }

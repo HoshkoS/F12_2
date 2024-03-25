@@ -1,4 +1,5 @@
 ﻿using Domain.Dtos.CategoryDtos;
+using Domain.Dtos.UserDtos;
 using Domain.Models;
 using Domain.Repositories;
 using Domain.Services.CategoryService;
@@ -39,6 +40,49 @@ namespace Infrastructure.Services.CategoryService
             };
             _categoryRepository.Add(newCategory);
             return await Task.FromResult(newCategory);
+        }
+
+        public ICollection<Category> getUserCategories(Guid UserId)
+        {
+            try
+            {
+                var categories = _categoryRepository.Find(c => c.UserId == UserId || c.IsGeneral);
+                if (categories == null)
+                {
+                    _logger.Error($"Categories for user with userID {UserId} not found.");
+                    throw new Exception($"Categories for user with ID {UserId} not found.");
+                }
+
+                //var userDto = new UserDto(user);
+
+                //return userDto;
+                return _categoryRepository.GetAll().ToList();
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error occurred while getting category for user with ID {UserId}: {ex.Message}");
+                throw;
+            }
+        }
+
+        public void removeCategory(Guid CategoryId)
+        {
+            try
+            {
+                var category = _categoryRepository.FirstOrDefault(c => c.Id == CategoryId);
+                if (category != null)
+                {
+                    _logger.Error($"Category with ID {CategoryId} not found.");
+                    throw new Exception($"Category with ID {CategoryId} not found.");
+                }
+                _categoryRepository.Remove(category);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error occurred while getting category with ID {CategoryId}: {ex.Message}");
+                throw;
+            }
         }
     }
 }
