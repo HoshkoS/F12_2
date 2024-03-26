@@ -8,6 +8,13 @@
 }
 
 <div>
+   @*  @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["ErrorMessage"]
+        </div>
+    } *@
+
     <div style="grid-row: 1; vertical-align: top; grid-column-span: 2;">
         <div style="display: grid; grid-template-rows: auto auto auto auto auto 3fr 0.5fr;">
             <div style="grid-row: 1; margin: 0 3px; height: auto; background-color: #A8B2C0; display: grid;">

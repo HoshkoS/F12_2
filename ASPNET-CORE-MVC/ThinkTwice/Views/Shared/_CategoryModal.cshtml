@@ -18,7 +18,7 @@
         {
             <div>
                 @Html.LabelFor(m => m.Title)
-                @Html.TextBoxFor(m => m.Title)
+                @Html.TextBoxFor(m => m.Title, new { required = "required" })
             </div>
             <div>
                 @Html.LabelFor(m => m.Type)
@@ -30,7 +30,8 @@
             </div>
             <div>
                 @Html.LabelFor(m => m.PercentageAmount)
-                @Html.TextBoxFor(m => m.PercentageAmount)
+                @Html.TextBoxFor(m => m.PercentageAmount, new { type = "number", min = "0", max = "100" })
+                @Html.ValidationMessageFor(m => m.PercentageAmount)
             </div>
             <button type="submit">Створити</button>
         }

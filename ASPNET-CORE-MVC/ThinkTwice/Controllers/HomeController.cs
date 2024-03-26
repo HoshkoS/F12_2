@@ -5,6 +5,7 @@ using Domain.Repositories;
 using Domain.Services.CategoryService;
 using Domain.Services.UserService;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using ThinkTwice.Models;
 using ILogger = Serilog.ILogger;
 
@@ -36,13 +37,6 @@ public class HomeController : Controller
         return View();
     }
 
-    public class SettingsViewModel
-    {
-        public UserDto User { get; set; }
-
-        public CategoryDto Category { get; set; }
-    }
-
     public IActionResult Settings()
     {
         CurrentUserId = Guid.Parse("3ABAA456-0B8E-49E0-A6E9-1B79DBA2E38F");
@@ -52,12 +46,19 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public ActionResult CreateCategory(CategoryDto category)
+    public IActionResult? CreateCategory(CategoryDto category)
     {
         category.UserId = CurrentUserId;
 
-        _categoryService.createCategory(category);
-        _logger.Error(category.Title);
+        if (ModelState.IsValid)
+        {
+            _categoryService.createCategory(category);
+            _logger.Error(category.Title);
+            return RedirectToAction("Settings", "Home");
+        }
+
+        TempData["ErrorMessage"] = ModelState.ErrorCount;
+
         return RedirectToAction("Settings", "Home");
     }
 
