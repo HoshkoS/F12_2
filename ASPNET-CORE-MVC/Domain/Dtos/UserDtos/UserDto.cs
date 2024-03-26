@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Domain.Dtos.CategoryDtos;
+using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,11 @@ namespace Domain.Dtos.UserDtos
             this.Email = user.Email;
             this.BirthDate = user.BirthDate;
             this.Currency = user.Currency;
-            this.Categories = user.Categories;
+            this.Categories = new List<CategoryDto>();
+            foreach (var category in user.Categories)
+            {
+                this.Categories.Add(new CategoryDto(category));
+            }
         }
 
         public string Name { get; set; }
@@ -29,6 +34,6 @@ namespace Domain.Dtos.UserDtos
 
         public string Currency { get; set; }
 
-        public virtual ICollection<Category> Categories { get; set; }
+        public virtual ICollection<CategoryDto> Categories { get; set; }
     }
 }

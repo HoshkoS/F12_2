@@ -41,7 +41,7 @@ public class HomeController : Controller
     {
         CurrentUserId = Guid.Parse("3ABAA456-0B8E-49E0-A6E9-1B79DBA2E38F");
         var currentUser = _userService.getUser(CurrentUserId);
-
+        currentUser.Categories = _categoryService.getUserCategories(CurrentUserId);
         return View(currentUser);
     }
 
@@ -59,6 +59,22 @@ public class HomeController : Controller
 
         TempData["ErrorMessage"] = ModelState.ErrorCount;
 
+        return RedirectToAction("Settings", "Home");
+    }
+
+    [HttpPost, ActionName("UpdateCategory")]
+    public ActionResult UpdateCategory(CategoryDto category)
+    {
+        _categoryService.updateCategory(category);
+        _logger.Error(category.Title);
+        return RedirectToAction("Settings", "Home");
+    }
+
+    [HttpPost, ActionName("DeleteCategory")]
+    public ActionResult RemoveCategory(CategoryDto category)
+    {
+        _categoryService.removeCategory(category);
+        _logger.Error(category.Title);
         return RedirectToAction("Settings", "Home");
     }
 
