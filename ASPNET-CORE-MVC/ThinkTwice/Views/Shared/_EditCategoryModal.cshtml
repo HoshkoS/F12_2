@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "EditCategory";
+}
+
+@{
+    Layout = null;
+}
+
+@model Domain.Dtos.CategoryDtos.CategoryDto
+
+<link rel="stylesheet" href="~/css/_CategoryModal.css" />
+
+<div id="Edit @Model.Title" class="modal" style="display:block;">
+    <div class="modal-content">
+        <span class="close" id="close @Model.Title">&times;</span>
+        @using (Html.BeginForm("UpdateCategory", "Home", FormMethod.Post, new { id = "categoryUpdateForm" }))
+        {
+            <div>
+                @Html.LabelFor(m => m.Title)
+                @Html.TextBoxFor(m => m.Title, new { placeholder = "@Model.Title"})
+            </div>
+            <div>
+                @Html.LabelFor(m => m.Type)
+                <select id="typeSelect" asp-for="Type" placeholder="@Model.Type">
+                    <option value="Дохід">Дохід</option>
+                    <option value="Баланс">Баланс</option>
+                    <option value="Витрати">Витрати</option>
+                </select>
+            </div>
+            @Html.TextBoxFor(m => m.Id, new { placeholder = "@Model.Id", hidden = true })
+            @Html.TextBoxFor(m => m.UserId, new { placeholder = "@Model.UserId", hidden = true })
+            @if (@Model.Type == "Витрати")
+            {
+                <div>
+                    @Html.LabelFor(m => m.PercentageAmount)
+                    @Html.TextBoxFor(m => m.PercentageAmount, new { placeholder = "@Model.PercentageAmount"})
+                </div>
+            }
+            <button type="submit">Редагувати</button>
+        }
+    </div>
+</div>

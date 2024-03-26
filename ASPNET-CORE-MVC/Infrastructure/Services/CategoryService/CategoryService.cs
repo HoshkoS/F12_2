@@ -1,20 +1,12 @@
-﻿using Domain.Dtos.CategoryDtos;
-using Domain.Dtos.UserDtos;
-using Domain.Models;
-using Domain.Repositories;
-using Domain.Services.CategoryService;
-using Infrastructure.Database;
-using Infrastructure.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ILogger = Serilog.ILogger;
-
-
-namespace Infrastructure.Services.CategoryService
+﻿namespace Infrastructure.Services.CategoryService
 {
+    using Domain.Dtos.CategoryDtos;
+    using Domain.Models;
+    using Domain.Services.CategoryService;
+    using Infrastructure.Database;
+    using Infrastructure.Repositories;
+    using ILogger = Serilog.ILogger;
+
     public class CategoryService: ICategoryService
     {
         private readonly CategoryRepository _categoryRepository;
@@ -26,6 +18,32 @@ namespace Infrastructure.Services.CategoryService
             _context = context;
             _logger = logger;
             _categoryRepository = new CategoryRepository(_context);
+        }
+
+        public ICollection<CategoryDto> getUserCategories(Guid UserId)
+        {
+            try
+            {
+                var categories = _categoryRepository.Find(c => c.UserId == UserId || c.IsGeneral);
+                if (categories == null)
+                {
+                    _logger.Error($"Categories for user with userID {UserId} not found.");
+                    throw new Exception($"Categories for user with ID {UserId} not found.");
+                }
+
+                var result = new List<CategoryDto>();
+                foreach (var category in categories)
+                {
+                    result.Add(new CategoryDto(category));
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error occurred while getting category for user with ID {UserId}: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task<Category> createCategory(CategoryDto category)
@@ -42,31 +60,28 @@ namespace Infrastructure.Services.CategoryService
             return await Task.FromResult(newCategory);
         }
 
-        public ICollection<Category> getUserCategories(Guid UserId)
+        public async Task<Category> updateCategory(CategoryDto category)
         {
-            try
+            var existingCategory = _categoryRepository.FirstOrDefault(c => c.Id == category.Id && c.UserId == category.UserId);
+            if (existingCategory == null)
             {
-                var categories = _categoryRepository.Find(c => c.UserId == UserId || c.IsGeneral);
-                if (categories == null)
-                {
-                    _logger.Error($"Categories for user with userID {UserId} not found.");
-                    throw new Exception($"Categories for user with ID {UserId} not found.");
-                }
+                _logger.Error($"Category with title {category.Title} not found.");
+                throw new Exception($"Category with title {category.Title} not found.");
+            }
 
-                return categories.ToList();
-            }
-            catch (Exception ex)
-            {
-                _logger.Error($"Error occurred while getting category for user with ID {UserId}: {ex.Message}");
-                throw;
-            }
+            existingCategory.Title = category.Title;
+            existingCategory.Type = category.Type;
+            existingCategory.PercentageAmount = category.PercentageAmount;
+
+            _categoryRepository.Update(existingCategory);
+            return existingCategory;
         }
 
         public void removeCategory(CategoryDto category)
         {
             try
             {
-                var categoryToRemove = _categoryRepository.FirstOrDefault(c => c.Title == category.Title && c.UserId == category.UserId);
+                var categoryToRemove = _categoryRepository.FirstOrDefault(c => c.Id == category.Id && c.UserId == category.UserId);
                 if (categoryToRemove == null)
                 {
                     _logger.Error($"Category with title {category.Title} not found.");

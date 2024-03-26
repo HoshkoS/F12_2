@@ -72,10 +72,10 @@
                 <div style="display: flex; flex-wrap: wrap;">
                     @foreach (var category in Model.Categories)
                     {
-                        <div style="height: auto; max-width:fit-content; background-color: #A8B2C0; display: grid;">
+                        <div id="@category.Title" style="height: auto; max-width:fit-content; background-color: #A8B2C0; display: grid;">
                             <div style="display: grid; grid-template-columns: auto 2fr 5fr;">
                                 <div class="user-info-value" style="display:inline-flex">
-                                    <input type="text" id="@category.Title" placeholder="@category.Title" name="textBoxTitle" disabled style="flex: 1;">
+                                    <input type="text" placeholder="@category.Title" name="textBoxTitle" disabled style="flex: 1;">
                                     @if (category.UserId != null)
                                     {
                                         <form asp-action="DeleteCategory" method="post" style="margin: 0;" onsubmit="return confirm('Are you sure you want to delete this category?')">
@@ -95,5 +95,6 @@
 </div>
 
 <button id="openModalButton">Створити категорію</button>
-
+@* @Html.Partial("_EditCategoryModal", Model.Categories.First())
+ *@
 @Html.Partial("_CategoryModal", new Domain.Dtos.CategoryDtos.CategoryDto())

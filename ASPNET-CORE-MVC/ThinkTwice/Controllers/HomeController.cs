@@ -61,6 +61,14 @@ public class HomeController : Controller
         return RedirectToAction("Settings", "Home");
     }
 
+    [HttpPost, ActionName("UpdateCategory")]
+    public ActionResult UpdateCategory(CategoryDto category)
+    {
+        _categoryService.updateCategory(category);
+        _logger.Error(category.Title);
+        return RedirectToAction("Settings", "Home");
+    }
+
     [HttpPost, ActionName("DeleteCategory")]
     public ActionResult RemoveCategory(CategoryDto category)
     {

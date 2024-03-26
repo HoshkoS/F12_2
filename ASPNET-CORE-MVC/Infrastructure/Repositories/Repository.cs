@@ -54,6 +54,12 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         return _context.Set<TEntity>().ToList();
     }
 
+    public void Update(TEntity entity)
+    {
+        _context.Entry(entity).State = EntityState.Modified;
+        _context.SaveChanges();
+    }
+
     public void Remove(TEntity entity)
     {
         _context.Remove(entity);

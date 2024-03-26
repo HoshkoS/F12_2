@@ -11,9 +11,11 @@ namespace Domain.Services.CategoryService
 {
     public interface ICategoryService
     {
+        ICollection<CategoryDto> getUserCategories(Guid UserId);
+
         Task<Category> createCategory(CategoryDto category);
 
-        ICollection<Category> getUserCategories(Guid UserId);
+        Task<Category> updateCategory(CategoryDto category);
 
         void removeCategory(CategoryDto category);
     }

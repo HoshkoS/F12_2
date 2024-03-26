@@ -4,6 +4,20 @@ namespace Domain.Dtos.CategoryDtos
 {
     public class CategoryDto
     {
+        public CategoryDto() { }
+
+        public CategoryDto(Category category)
+        {
+            this.Id = category.Id;
+            this.UserId = category.UserId;
+            this.Title = category.Title;
+            this.IsGeneral = category.IsGeneral;
+            this.PercentageAmount = category.PercentageAmount;
+            this.Type = category.Type;
+        }
+
+        public Guid Id { get; set; }
+
         public Guid? UserId { get; set; }
 
         public string Title { get; set; } = null!;
