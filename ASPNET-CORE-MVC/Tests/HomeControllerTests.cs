@@ -1,9 +1,11 @@
-﻿using Domain.Dtos.CategoryDtos;
+﻿using System.Text;
+using Domain.Dtos.CategoryDtos;
 using Domain.Dtos.UserDtos;
 using Domain.Models;
 using Domain.Repositories;
 using Domain.Services.CategoryService;
 using Domain.Services.UserService;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using Serilog;
@@ -17,6 +19,7 @@ public class HomeControllerTests
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserService _userService;
     private readonly ICategoryService _categoryService;
+    private readonly IHttpContextAccessor _contextAccessor;
 
     public HomeControllerTests()
     {
@@ -25,23 +28,40 @@ public class HomeControllerTests
         _unitOfWork = Substitute.For<IUnitOfWork>();
         _userService = Substitute.For<IUserService>();
         _categoryService = Substitute.For<ICategoryService>();
+        _contextAccessor = Substitute.For<IHttpContextAccessor>();
     }
 
     [Fact]
     public async Task Settings_ReturnsViewWithCurrentUser()
     {
         // Arrange
-        var controller = new HomeController(_logger, null, _userService, _categoryService);
-        var expectedUserId = Guid.Parse("3ABAA456-0B8E-49E0-A6E9-1B79DBA2E38F");
+        var controller = new HomeController(_logger, null, _userService, _categoryService, _contextAccessor);
+        var expectedUserId = Guid.NewGuid();
         var user = new User()
         {
-            Id = Guid.NewGuid(), Currency = "UAH", BirthDate = DateTime.Now, Email = "emain@gmail.com", Name = "name",
-            Password = "123132", Surname = "user"
+            Id = expectedUserId, // Use the expected user ID here
+            Currency = "UAH",
+            BirthDate = DateTime.Now,
+            Email = "emain@gmail.com",
+            Name = "name",
+            Password = "123132",
+            Surname = "user"
         };
         var currentUser = new UserDto(user); // Assuming this is your UserDto model
 
-        _userService.GetUser(expectedUserId).Returns(Task.FromResult(currentUser));
-        _categoryService.GetUserCategories(expectedUserId).Returns([]);
+        var userIdBytes = Encoding.UTF8.GetBytes(expectedUserId.ToString());
+        var session = Substitute.For<ISession>();
+        session.TryGetValue(Arg.Any<string>(), out Arg.Any<byte[]>()).Returns(args =>
+        {
+            args[1] = userIdBytes;
+            return true;
+        });
+        var httpContext = new DefaultHttpContext();
+        httpContext.Session = session;
+        _contextAccessor.HttpContext.Returns(httpContext);
+
+        _userService.GetUser(expectedUserId).Returns(Task.FromResult(currentUser)); // Use expectedUserId here
+        _categoryService.GetUserCategories(expectedUserId).Returns(new List<CategoryDto>());
 
         // Act
         var result = await controller.Settings() as ViewResult;
@@ -49,14 +69,14 @@ public class HomeControllerTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal(currentUser, result.Model);
-        await _userService.Received(1).GetUser(Arg.Any<Guid>());
+        await _userService.Received(1).GetUser(expectedUserId); // Use expectedUserId here
     }
 
     [Fact]
     public async Task CreateCategory_RedirectsToSettings_WhenModelStateIsValid()
     {
         // Arrange
-        var controller = new HomeController(_logger, _unitOfWork, _userService, _categoryService);
+        var controller = new HomeController(_logger, _unitOfWork, _userService, _categoryService, _contextAccessor);
         var categoryDto = new CategoryDto();
 
         // Act
@@ -73,7 +93,7 @@ public class HomeControllerTests
     public async Task UpdateCategory_RedirectsToSettings()
     {
         // Arrange
-        var controller = new HomeController(_logger, _unitOfWork, _userService, _categoryService);
+        var controller = new HomeController(_logger, _unitOfWork, _userService, _categoryService, _contextAccessor);
         var categoryDto = new CategoryDto();
 
         // Act
@@ -90,7 +110,7 @@ public class HomeControllerTests
     public async Task DeleteCategory_RedirectsToSettings()
     {
         // Arrange
-        var controller = new HomeController(_logger, _unitOfWork, _userService, _categoryService);
+        var controller = new HomeController(_logger, _unitOfWork, _userService, _categoryService, _contextAccessor);
         var categoryDto = new CategoryDto();
 
         // Act
