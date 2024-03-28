@@ -6,8 +6,11 @@ namespace Infrastructure.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly ServerDbContext _context;
+
     public IUserRepository Users { get; }
+
     public ICategoryRepository Categories { get; }
+
     public ITransactionRepository Transactions { get; }
 
     private bool _disposed = false;
@@ -20,24 +23,24 @@ public class UnitOfWork : IUnitOfWork
         Transactions = new TransactionsRepository(_context);
     }
 
-    public int Complete()
+    public async Task<int> Complete()
     {
-        return _context.SaveChanges();
+        return await _context.SaveChangesAsync();
     }
 
-    protected virtual void Dispose(bool disposing)
+    protected virtual async Task Dispose(bool disposing)
     {
         if (!_disposed && disposing)
         {
-            _context.Dispose();
+            await _context.DisposeAsync();
         }
 
         _disposed = true;
     }
 
-    public void Dispose()
+    public async void Dispose()
     {
-        Dispose(true);
+        await Dispose(true);
         GC.SuppressFinalize(this);
     }
 }
