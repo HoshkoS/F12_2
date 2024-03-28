@@ -17,4 +17,11 @@ public class Transaction
     public string? Details { get; set; }
 
     public bool Planned { get; set; }
+
+    public virtual Category? FromCategoryNavigation { get; set; }
+
+    public virtual Category? ToCategoryNavigation { get; set; }
+
+    public virtual User User { get; set; } = null!;
+
 }

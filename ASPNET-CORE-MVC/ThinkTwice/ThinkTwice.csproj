@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <None Include="wwwroot\Assets\Images\bar_chart_growth_logo.png" />
+    <None Include="wwwroot\css\Settings.css" />
   </ItemGroup>
 
 </Project>

@@ -6,5 +6,7 @@ namespace Domain.Services.UserService
     public interface IUserService
     {
         Task<User> createUser(RegisterUserDto user);
+
+        UserDto getUser(Guid id);
     }
 }

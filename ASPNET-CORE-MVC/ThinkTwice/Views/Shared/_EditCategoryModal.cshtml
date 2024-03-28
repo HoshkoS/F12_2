@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "EditCategory";
+}
+
+@{
+    Layout = null;
+}
+
+@model Domain.Dtos.CategoryDtos.CategoryDto
+
+<link rel="stylesheet" href="~/css/_CategoryModal.css" />
+
+<div id="editCategoryModal" class="modal" style="display:block;">
+    <div class="modal-content">
+        <span class="close" id="close">&times;</span>
+        @using (Html.BeginForm("UpdateCategory", "Home", FormMethod.Post, new { id = "categoryUpdateForm" }))
+        {
+            <div>
+                @Html.LabelFor(m => m.Title)
+                @Html.TextBoxFor(m => m.Title, new { placeholder = "@Model.Title", id = "titleInput", disabled = true })
+            </div>
+            <div>
+                @Html.LabelFor(m => m.Type)
+                <select id="typeSelect" asp-for="Type" placeholder="@Model.Type" disabled>
+                    <option value="Дохід">Дохід</option>
+                    <option value="Баланс">Баланс</option>
+                    <option value="Витрати">Витрати</option>
+                </select>
+            </div>
+            @Html.TextBoxFor(m => m.Id, new { placeholder = "@Model.Id", hidden = true })
+            @Html.TextBoxFor(m => m.UserId, new { placeholder = "@Model.UserId", hidden = true })
+            @if (@Model.Type == "Витрати")
+            {
+                <div>
+                    @Html.LabelFor(m => m.PercentageAmount)
+                    @Html.TextBoxFor(m => m.PercentageAmount, new { placeholder = "@Model.PercentageAmount", id = "percentageInput", disabled = true })
+                </div>
+            }
+            <button id="submitBtn" type="submit" style="display:none;">Зберегти</button>
+        }
+        <button id="toggleBtn" onclick="toggleDisabledState()">Редагувати</button>
+    </div>
+</div>
+
+<script>
+    let modal = document.getElementById('editCategoryModal');
+    let span = document.getElementById('close');
+    
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+    
+    function toggleDisabledState() {
+        let toggleBtn = document.getElementById('toggleBtn');
+        let submitBtn = document.getElementById('submitBtn');
+
+        if (toggleBtn.textContent == "Редагувати") {
+            toggleBtn.textContent = "Скасувати";
+            submitBtn.style.display = 'block';
+        }
+        else {
+            toggleBtn.textContent = "Редагувати";
+            submitBtn.style.display = 'none';
+        }
+        let titleInput = document.getElementById('titleInput');
+        let typeSelect = document.getElementById('typeSelect');
+        let percentageInput = document.getElementById('percentageInput');
+
+        titleInput.disabled = !titleInput.disabled;
+        typeSelect.disabled = !typeSelect.disabled;
+        if (percentageInput) {
+            percentageInput.disabled = !percentageInput.disabled;
+        }
+    }
+</script>

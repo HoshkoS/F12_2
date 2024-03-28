@@ -5,6 +5,7 @@ using Domain.Dtos.UserDtos;
 using ILogger = Serilog.ILogger;
 using BCrypt.Net;
 using Infrastructure.Database;
+using Microsoft.Identity.Client;
 
 namespace Infrastructure.Services.UserService
 {
@@ -46,6 +47,28 @@ namespace Infrastructure.Services.UserService
             };
             userRepository.Add(newUser);
             return await Task.FromResult(newUser);
+        }
+
+        public UserDto getUser(Guid id)
+        {
+            try
+            {
+                var user = userRepository.Find(u => u.Id == id).SingleOrDefault();
+                if (user == null)
+                {
+                    _logger.Error($"User with ID {id} not found.");
+                    throw new Exception($"User with ID {id} not found.");
+                }
+
+                var userDto = new UserDto(user);
+
+                return userDto;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error occurred while getting user with ID {id}: {ex.Message}");
+                throw;
+            }
         }
     }
 }
