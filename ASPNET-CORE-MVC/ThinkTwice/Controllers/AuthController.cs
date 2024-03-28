@@ -1,7 +1,7 @@
-using Domain.Models;
+using Domain.Dtos.UserDtos;
 using Domain.Repositories;
+using Domain.Services.UserService;
 using Microsoft.AspNetCore.Mvc;
-using ThinkTwice.Models;
 using ILogger = Serilog.ILogger;
 using Domain.Dtos.UserDtos;
 using Domain.Models;
@@ -18,14 +18,14 @@ public class AuthController : Controller
     private readonly ILogger _logger;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserService _userService;
-    
+
     public AuthController(ILogger logger, IUnitOfWork unitOfWork, IUserService userService)
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
         _userService = userService;
     }
-    
+
     public ActionResult Index()
     {
         return View();
@@ -45,7 +45,7 @@ public class AuthController : Controller
     {
         return View();
     }
-    
+
     [HttpPost]
     public async Task<ActionResult> CreateUser(RegisterUserDto user)
     {
@@ -102,7 +102,7 @@ public class AuthController : Controller
             return View();
         }
     }
-    
+
     public ActionResult Delete(int id)
     {
         return View();

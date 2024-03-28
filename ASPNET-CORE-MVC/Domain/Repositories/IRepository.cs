@@ -4,14 +4,23 @@ namespace Domain.Repositories;
 
 public interface IRepository<TEntity> where TEntity : class
 {
-    TEntity? Get(int id);
-    TEntity? Single(Expression<Func<TEntity, bool>> predicate);
-    TEntity? SingleOrDefault(Expression<Func<TEntity, bool>> predicate);
-    TEntity? FirstOrDefault(Expression<Func<TEntity, bool>> predicate);
-    IEnumerable<TEntity> GetAll();
-    IEnumerable<TEntity>? Find(Expression<Func<TEntity, bool>> predicate);
-    IEnumerable<bool> Select(Expression<Func<TEntity, bool>> predicate);
-    void Add(TEntity entity);
-    void Update(TEntity entity);
-    void Remove(TEntity entity);
+    Task<TEntity?> Get(int id);
+
+    Task<TEntity?> Single(Expression<Func<TEntity, bool>> predicate);
+
+    Task<TEntity?> SingleOrDefault(Expression<Func<TEntity, bool>> predicate);
+
+    Task<TEntity?> FirstOrDefault(Expression<Func<TEntity, bool>> predicate);
+
+    Task<IEnumerable<TEntity>> GetAll();
+
+    Task<IEnumerable<TEntity>?> Find(Expression<Func<TEntity, bool>> predicate);
+
+    Task<IEnumerable<bool>> Select(Expression<Func<TEntity, bool>> predicate);
+
+    Task Add(TEntity entity);
+
+    Task Update(TEntity entity);
+
+    Task Remove(TEntity entity);
 }

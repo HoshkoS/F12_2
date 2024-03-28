@@ -1,11 +1,9 @@
 ﻿using System.Diagnostics;
 using Domain.Dtos.CategoryDtos;
-using Domain.Dtos.UserDtos;
 using Domain.Repositories;
 using Domain.Services.CategoryService;
 using Domain.Services.UserService;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using ThinkTwice.Models;
 using ILogger = Serilog.ILogger;
 
@@ -19,7 +17,8 @@ public class HomeController : Controller
     private readonly ICategoryService _categoryService;
     public static Guid CurrentUserId;
 
-    public HomeController(ILogger logger, IUnitOfWork unitOfWork, IUserService userService, ICategoryService categoryService)
+    public HomeController(ILogger logger, IUnitOfWork unitOfWork, IUserService userService,
+        ICategoryService categoryService)
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
@@ -37,22 +36,22 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Settings()
+    public async Task<IActionResult> Settings()
     {
         CurrentUserId = Guid.Parse("3ABAA456-0B8E-49E0-A6E9-1B79DBA2E38F");
-        var currentUser = _userService.getUser(CurrentUserId);
-        currentUser.Categories = _categoryService.getUserCategories(CurrentUserId);
+        var currentUser = await _userService.GetUser(CurrentUserId);
+        currentUser.Categories = await _categoryService.GetUserCategories(CurrentUserId);
         return View(currentUser);
     }
 
     [HttpPost]
-    public IActionResult? CreateCategory(CategoryDto category)
+    public async Task<IActionResult?> CreateCategory(CategoryDto category)
     {
         category.UserId = CurrentUserId;
 
         if (ModelState.IsValid)
         {
-            _categoryService.createCategory(category);
+            await _categoryService.CreateCategory(category);
             _logger.Error(category.Title);
             return RedirectToAction("Settings", "Home");
         }
@@ -63,17 +62,17 @@ public class HomeController : Controller
     }
 
     [HttpPost, ActionName("UpdateCategory")]
-    public ActionResult UpdateCategory(CategoryDto category)
+    public async Task<ActionResult> UpdateCategory(CategoryDto category)
     {
-        _categoryService.updateCategory(category);
+        await _categoryService.UpdateCategory(category);
         _logger.Error(category.Title);
         return RedirectToAction("Settings", "Home");
     }
 
     [HttpPost, ActionName("DeleteCategory")]
-    public ActionResult RemoveCategory(CategoryDto category)
+    public async Task<ActionResult> RemoveCategory(CategoryDto category)
     {
-        _categoryService.removeCategory(category);
+        await _categoryService.RemoveCategory(category);
         _logger.Error(category.Title);
         return RedirectToAction("Settings", "Home");
     }

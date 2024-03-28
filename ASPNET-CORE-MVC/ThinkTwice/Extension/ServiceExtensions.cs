@@ -3,8 +3,8 @@ using Domain.Services.CategoryService;
 using Domain.Services.UserService;
 using Infrastructure.Database;
 using Infrastructure.Repositories;
-using Infrastructure.Services.UserService;
 using Infrastructure.Services.CategoryService;
+using Infrastructure.Services.UserService;
 using Microsoft.EntityFrameworkCore;
 
 namespace ThinkTwice.Extension;

@@ -23,5 +23,4 @@ public class Transaction
     public virtual Category? ToCategoryNavigation { get; set; }
 
     public virtual User User { get; set; } = null!;
-
 }
