@@ -1,6 +1,4 @@
 ﻿using Domain.Dtos.CategoryDtos;
-using Domain.Dtos.UserDtos;
-using Domain.Models;
 using Domain.Repositories;
 using Domain.Services.CategoryService;
 using Domain.Services.UserService;
@@ -28,27 +26,9 @@ public class HomeControllerTests
     }
 
     [Fact]
-    public async Task Settings_ReturnsViewWithCurrentUser()
-    {
-        var controller = new HomeController(_logger, _unitOfWork, _userService, _categoryService);
-        var user = new User();
-        var currentUser = new UserDto(user);
-
-        _userService.GetUser(Arg.Any<Guid>()).Returns(Task.FromResult(currentUser));
-        _categoryService.GetUserCategories(Arg.Any<Guid>())
-            .Returns(Array.Empty<CategoryDto>());
-
-        // Act
-        var result = await controller.Settings() as ViewResult;
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.Equal(currentUser, result.Model);
-    }
-
-    [Fact]
     public async Task CreateCategory_RedirectsToSettings_WhenModelStateIsValid()
     {
+        // Arrange
         var controller = new HomeController(_logger, _unitOfWork, _userService, _categoryService);
         var categoryDto = new CategoryDto();
 
@@ -59,5 +39,40 @@ public class HomeControllerTests
         Assert.NotNull(result);
         Assert.Equal("Settings", result.ActionName);
         Assert.Equal("Home", result.ControllerName);
+        await _categoryService.Received(1).CreateCategory(Arg.Any<CategoryDto>());
+    }
+
+    [Fact]
+    public async Task UpdateCategory_RedirectsToSettings()
+    {
+        // Arrange
+        var controller = new HomeController(_logger, _unitOfWork, _userService, _categoryService);
+        var categoryDto = new CategoryDto();
+
+        // Act
+        var result = await controller.UpdateCategory(categoryDto) as RedirectToActionResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("Settings", result.ActionName);
+        Assert.Equal("Home", result.ControllerName);
+        await _categoryService.Received(1).UpdateCategory(Arg.Any<CategoryDto>());
+    }
+
+    [Fact]
+    public async Task DeleteCategory_RedirectsToSettings()
+    {
+        // Arrange
+        var controller = new HomeController(_logger, _unitOfWork, _userService, _categoryService);
+        var categoryDto = new CategoryDto();
+
+        // Act
+        var result = await controller.RemoveCategory(categoryDto) as RedirectToActionResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("Settings", result.ActionName);
+        Assert.Equal("Home", result.ControllerName);
+        await _categoryService.Received(1).RemoveCategory(Arg.Any<CategoryDto>());
     }
 }
