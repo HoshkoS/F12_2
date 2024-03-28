@@ -1,8 +1,10 @@
-﻿using Domain.Dtos.UserDtos;
+﻿using System.Text;
+using Domain.Dtos.UserDtos;
 using Domain.Models;
 using Domain.Services.UserService;
 using Infrastructure.Database;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Http;
 using ILogger = Serilog.ILogger;
 
 namespace Infrastructure.Services.UserService;
@@ -12,12 +14,14 @@ public class UserService : IUserService
     private readonly UserRepository userRepository;
     private readonly ILogger _logger;
     private readonly ServerDbContext _context;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public UserService(ServerDbContext context, ILogger logger)
+    public UserService(ServerDbContext context, ILogger logger, IHttpContextAccessor httpContext)
     {
         _context = context;
         userRepository = new UserRepository(_context);
         _logger = logger;
+        _httpContextAccessor = httpContext;
     }
 
     public async Task<User> createUser(RegisterUserDto user)
@@ -66,6 +70,10 @@ public class UserService : IUserService
             _logger.Error($"\'Password\' is wrong!");
             throw new Exception("Password is wrong!");
         }
+
+        var userIdString = userData.Id.ToString();
+        var userIdBytes = Encoding.UTF8.GetBytes(userIdString);
+        _httpContextAccessor.HttpContext.Session.Set("UserId", userIdBytes);
 
         return await Task.FromResult(true);
     }

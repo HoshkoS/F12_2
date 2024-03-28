@@ -20,7 +20,8 @@ public class Program
         builder.Services.AddControllersWithViews();
         builder.Services.AddUnitOfWork();
         builder.Services.AddServices();
-
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddSession();
 
         var app = builder.Build();
 
@@ -34,6 +35,7 @@ public class Program
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
+        app.UseSession();
 
         app.UseRouting();
 
