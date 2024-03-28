@@ -1,69 +1,38 @@
-using 
+@model Domain.Dtos.UserDtos.RegisterUserDto
+
 @{
     ViewData["Title"] = "SignUp";
 }
-@model ThinkTwice.Dtos.RegisterUserDTO
 
-@using (Html.BeginForm("CreateUser", "Auth", FormMethod.Post))
-{
-    <div>
-        @Html.LabelFor(m => m.Name)
-        @Html.TextBoxFor(m => m.Name)
-    </div>
-    <div>
-        @Html.LabelFor(m => m.Surname)
-        @Html.TextBoxFor(m => m.Surname)
-    </div>
-    <div>
-        @Html.LabelFor(m => m.Email)
-        @Html.TextBoxFor(m => m.Email)
-    </div>
-    <div>
-        @Html.LabelFor(m => m.Password)
-        @Html.PasswordFor(m => m.Password)
-    </div>
-    <div>
-        @Html.LabelFor(m => m.PasswordRepeat)
-        @Html.PasswordFor(m => m.PasswordRepeat)
-    </div>
-    <button type="submit">Register</button>
-}
+<link rel="stylesheet" href="~/css/Auth.css" />
 
-@*
-@{
-    ViewData["Title"] = "SignUp";
-}
 <div class="sign_up_window">
-    <form class = "form-content">
+    <form class="form-content" method="post" asp-action="CreateUser">
         <img src="/Assets/Images/bar_chart_growth_logo.png" alt="alt text" />
         <h1>Реєстрація</h1>
         <div class="textBox">
-            <input class="input" placeholder = "Ім'я" data-val="true" id="a" value=""/>
-            <br/>
-            <input class="input" placeholder="Прізвище" data-val="true" id="b" value=""/>
-            <br/>
-            <input class="input" placeholder="Email" data-val="true" id="c" value=""/>
-            <br/>
-            <input class="input" placeholder="Пароль" data-val="true" id="d"  value=""/>
-            <br/>
-            <input class="input" placeholder="Підтвердіть пароль"  data-val="true" id="e"  value=""/>
-            <br/>
-            <input type="text" class="input" placeholder="Дата народження" id="birthdate" name="birthdate" value=""/>
-
-            <br/>
+            <input required class="input" placeholder="Ім'я" asp-for="Name" />
+            <br />
+            <input required class="input" placeholder="Прізвище" asp-for="Surname" />
+            <br />
+            <input required class="input" placeholder="Email" asp-for="Email" />
+            <br />
+            <input required class="input" type="password" placeholder="Пароль" asp-for="Password" />
+            <br />
+            <input required class="input" type="password" placeholder="Підтвердіть пароль" asp-for="PasswordRepeat" />
+            <br />
+            <input required type="date" class="input" placeholder="Дата народження" asp-for="Birthdate" />
+            <br />
             <div style="position: relative;" class="input">
-              <label class="currency_label"> Валюта </label>
-              <select class="currency_selector" id="currency" name="currency">
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="GBP">UAH</option>
-                <!-- Додайте інші валюти за потребою -->
-              </select>
+                <label class="currency_label"> Валюта </label>
+                <select class="currency_selector" asp-for="Currency">
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="UAH">UAH</option>
+                </select>
             </div>
-            <br/>
-            <button id="submit" type="submit" value="Submit" onclick="btnSubmit_Click()"
-                    class="btn btn-primary" runat="server">Зареєструватись</button>
+            <br />
+            <button id="submit" type="submit" value="Submit" class="btn btn-primary">Зареєструватись</button>
         </div>
     </form>
 </div>
-*@

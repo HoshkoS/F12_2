@@ -1,20 +1,21 @@
-﻿
+﻿@model Domain.Dtos.UserDtos.LoginUserDto
+
 @{
-    ViewData["Title"] = "SignUp";
+    ViewData["Title"] = "Login";
 }
+
+<link rel="stylesheet" href="~/css/Auth.css" />
+
 <div class="sign_up_window">
-    <form class = "form-content">
+    <form class="form-content" method="post" asp-action="CheckUser">
         <img src="/Assets/Images/bar_chart_growth_logo.png" alt="alt text" />
         <h1>Вхід</h1>
         <div class="textBox">
-            <input type="url" placeholder="email" class="input" data-val="true" data-val-url="The Website field is not a valid fully- 
-           qualified http, https, or ftp URL." id="a" name="inputURL" value=""/>
-            <br/>
-            <input type="url" placeholder="password" class="input"  data-val="true" data-val-url="The Website field is not a valid fully-
-           qualified http, https, or ftp URL." id="b" name="inputURL" value=""/>
-            <br/>
-            <button id="submit" type="submit" value="Submit" onclick="btnSubmit_Click()"
-                    class="btn btn-primary" runat="server">Submit</button>
+            <input required class="input" placeholder="Email" asp-for="Email" />
+            <br />
+            <input required class="input" type="password" placeholder="Пароль" asp-for="Password" />
+            <br />
+            <button id="submit" type="submit" value="Submit" class="btn btn-primary">Увійти</button>
         </div>
     </form>
 </div>

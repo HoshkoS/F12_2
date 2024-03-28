@@ -3,18 +3,17 @@
 public class User
 {
     public Guid Id { get; set; }
+    public required string Email { get; set; }
 
-    public string Email { get; set; } = null!;
+    public required string Password { get; set; }
 
-    public string Password { get; set; } = null!;
+    public required string Name { get; set; }
 
-    public string Name { get; set; } = null!;
+    public required string Surname { get; set; }
 
-    public string Surname { get; set; } = null!;
+    public required DateTime BirthDate { get; set; }
 
-    public DateTime? BirthDate { get; set; }
-
-    public string Currency { get; set; } = null!;
+    public required string Currency { get; set; }
 
     public virtual ICollection<Category> Categories { get; set; } = new List<Category>();
 

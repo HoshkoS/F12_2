@@ -33,7 +33,11 @@ public class HomeControllerTests
         // Arrange
         var controller = new HomeController(_logger, null, _userService, _categoryService);
         var expectedUserId = Guid.Parse("3ABAA456-0B8E-49E0-A6E9-1B79DBA2E38F");
-        var user = new User() { Id = Guid.NewGuid() };
+        var user = new User()
+        {
+            Id = Guid.NewGuid(), Currency = "UAH", BirthDate = DateTime.Now, Email = "emain@gmail.com", Name = "name",
+            Password = "123132", Surname = "user"
+        };
         var currentUser = new UserDto(user); // Assuming this is your UserDto model
 
         _userService.GetUser(expectedUserId).Returns(Task.FromResult(currentUser));

@@ -3,6 +3,13 @@ using Domain.Repositories;
 using Domain.Services.UserService;
 using Microsoft.AspNetCore.Mvc;
 using ILogger = Serilog.ILogger;
+using Domain.Dtos.UserDtos;
+using Domain.Models;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
+using Domain.Services.UserService;
+using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace ThinkTwice.Controllers;
 
@@ -40,10 +47,27 @@ public class AuthController : Controller
     }
 
     [HttpPost]
-    public ActionResult CreateUser(RegisterUserDto user)
+    public async Task<ActionResult> CreateUser(RegisterUserDto user)
     {
-        _userService.CreateUser(user);
-        return RedirectToAction("Login", "Auth");
+        try {
+            await _userService.createUser(user);
+            return RedirectToAction("Login", "Auth");
+        } catch (Exception ex) {
+            return RedirectToAction("Index", "Home");
+        }
+    }
+    [HttpPost]
+    public async Task<ActionResult> CheckUser(LoginUserDto user)
+    {
+        try
+        {
+            await _userService.checkUser(user);
+            return RedirectToAction("Privacy", "Home");
+        }
+        catch (Exception ex)
+        {
+            return RedirectToAction("Index", "Home");
+        }
     }
 
     [HttpPost]
