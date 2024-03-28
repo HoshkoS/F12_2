@@ -45,13 +45,13 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult? CreateCategory(CategoryDto category)
+    public async Task<IActionResult?> CreateCategory(CategoryDto category)
     {
         category.UserId = CurrentUserId;
 
         if (ModelState.IsValid)
         {
-            _categoryService.CreateCategory(category);
+            await _categoryService.CreateCategory(category);
             _logger.Error(category.Title);
             return RedirectToAction("Settings", "Home");
         }
@@ -62,17 +62,17 @@ public class HomeController : Controller
     }
 
     [HttpPost, ActionName("UpdateCategory")]
-    public ActionResult UpdateCategory(CategoryDto category)
+    public async Task<ActionResult> UpdateCategory(CategoryDto category)
     {
-        _categoryService.UpdateCategory(category);
+        await _categoryService.UpdateCategory(category);
         _logger.Error(category.Title);
         return RedirectToAction("Settings", "Home");
     }
 
     [HttpPost, ActionName("DeleteCategory")]
-    public ActionResult RemoveCategory(CategoryDto category)
+    public async Task<ActionResult> RemoveCategory(CategoryDto category)
     {
-        _categoryService.RemoveCategory(category);
+        await _categoryService.RemoveCategory(category);
         _logger.Error(category.Title);
         return RedirectToAction("Settings", "Home");
     }
