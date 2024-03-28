@@ -1,22 +1,15 @@
 ﻿using Domain.Dtos.CategoryDtos;
-using Domain.Dtos.UserDtos;
 using Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Services.CategoryService
+namespace Domain.Services.CategoryService;
+
+public interface ICategoryService
 {
-    public interface ICategoryService
-    {
-        ICollection<CategoryDto> getUserCategories(Guid UserId);
+    Task<ICollection<CategoryDto>> GetUserCategories(Guid UserId);
 
-        Task<Category> createCategory(CategoryDto category);
+    Task<Category> CreateCategory(CategoryDto category);
 
-        Task<Category> updateCategory(CategoryDto category);
+    Task<Category> UpdateCategory(CategoryDto category);
 
-        void removeCategory(CategoryDto category);
-    }
+    Task RemoveCategory(CategoryDto category);
 }

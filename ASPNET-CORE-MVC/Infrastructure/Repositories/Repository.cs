@@ -13,56 +13,56 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         _context = context;
     }
 
-    public void Add(TEntity entity)
+    public async Task Add(TEntity entity)
     {
-        _context.Add(entity);
-        _context.SaveChanges();
+        await _context.AddAsync(entity);
+        await _context.SaveChangesAsync();
     }
 
-    public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+    public async Task<IEnumerable<TEntity>> Find(Expression<Func<TEntity, bool>> predicate)
     {
-        return _context.Set<TEntity>().Where(predicate).ToList();
+        return await _context.Set<TEntity>().Where(predicate).ToListAsync();
     }
 
-    public IEnumerable<bool> Select(Expression<Func<TEntity, bool>> predicate)
+    public async Task<IEnumerable<bool>> Select(Expression<Func<TEntity, bool>> predicate)
     {
         return _context.Set<TEntity>().Select(predicate);
     }
 
-    public TEntity? Get(int id)
+    public async Task<TEntity?> Get(int id)
     {
-        return _context.Set<TEntity>().Find(id);
+        return await _context.Set<TEntity>().FindAsync(id);
     }
 
-    public TEntity? Single(Expression<Func<TEntity, bool>> predicate)
+    public async Task<TEntity?> Single(Expression<Func<TEntity, bool>> predicate)
     {
-        return _context.Set<TEntity>().Single(predicate);
+        return await _context.Set<TEntity>().FirstOrDefaultAsync(predicate);
     }
 
-    public TEntity? SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
+    public async Task<TEntity?> SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
     {
-        return _context.Set<TEntity>().SingleOrDefault(predicate);
+        return await _context.Set<TEntity>().SingleOrDefaultAsync(predicate);
     }
 
-    public TEntity? FirstOrDefault(Expression<Func<TEntity, bool>> predicate)
+    public async Task<TEntity?> FirstOrDefault(Expression<Func<TEntity, bool>> predicate)
     {
-        return _context.Set<TEntity>().FirstOrDefault(predicate);
+        return await _context.Set<TEntity>().FirstOrDefaultAsync(predicate);
     }
 
-    public IEnumerable<TEntity> GetAll()
+    public async Task<IEnumerable<TEntity>> GetAll()
     {
-        return _context.Set<TEntity>().ToList();
+        return await _context.Set<TEntity>().ToListAsync();
     }
 
-    public void Update(TEntity entity)
+    public async Task Update(TEntity entity)
     {
         _context.Entry(entity).State = EntityState.Modified;
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void Remove(TEntity entity)
+    public async Task Remove(TEntity entity)
     {
         _context.Remove(entity);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 }

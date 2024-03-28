@@ -1,9 +1,8 @@
-﻿namespace Domain.Services.LoggerInterface
+﻿namespace Domain.Services.LoggerInterface;
+
+public interface ILoggerService
 {
-    public interface ILoggerService
-    {
-        void LogInfo(string infoMsg);
-        void LogWarn(string warnMsg);
-        void LogError(string errorMsg);
-    }
+    void LogInfo(string infoMsg);
+    void LogWarn(string warnMsg);
+    void LogError(string errorMsg);
 }
