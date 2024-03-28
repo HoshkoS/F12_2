@@ -27,13 +27,13 @@ namespace Infrastructure.Services.UserService
                 _logger.Error($"\'Password\' and \'Repeat Password\' fields must be the same!");
                 throw new Exception("Password and Repeat Password fields must be the same!");
             }
-            //var isUserExist = this.userRepository.Find(u => u.Email == user.Email);
-            //if (isUserExist != null)
-            //{
-            //    _logger.Error(isUserExist.ToString());
-            //    _logger.Error($"User with Email {user.Email} already exists!");
-            //    throw new Exception($"User with Email {user.Email} already exists!");
-            //}
+            var isUserExist = userRepository.FirstOrDefault(u => u.Email == user.Email);
+            if (isUserExist != null)
+            {
+                _logger.Error(isUserExist.ToString());
+                _logger.Error($"User with Email {user.Email} already exists!");
+                throw new Exception($"User with Email {user.Email} already exists!");
+            }
 
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password);
 
@@ -43,10 +43,28 @@ namespace Infrastructure.Services.UserService
                 Password = hashedPassword,
                 Name = user.Name,
                 Surname = user.Surname,
-                Currency = "UAH"
+                Currency = user.Currency,
+                BirthDate = DateTime.Parse(user.Birthdate)
             };
             userRepository.Add(newUser);
             return await Task.FromResult(newUser);
+        }
+
+        public async Task<bool> checkUser(LoginUserDto user)
+        {
+            var userData = userRepository.FirstOrDefault(u => u.Email == user.Email);
+            if (userData == null)
+            {
+                _logger.Error($"\'User\' not found!");
+                throw new Exception("User not found!");
+            }
+            bool verified= BCrypt.Net.BCrypt.Verify(user.Password, userData.Password);
+            if (!verified)
+            {
+                _logger.Error($"\'Password\' is wrong!");
+                throw new Exception("Password is wrong!");
+            }
+            return await Task.FromResult(true);
         }
 
         public UserDto getUser(Guid id)
