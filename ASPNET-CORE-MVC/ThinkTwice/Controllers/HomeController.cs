@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text;
 using Domain.Dtos.CategoryDtos;
 using Domain.Repositories;
 using Domain.Services.CategoryService;
@@ -15,15 +16,17 @@ public class HomeController : Controller
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserService _userService;
     private readonly ICategoryService _categoryService;
-    public static Guid CurrentUserId;
+    public static Guid currentUserId;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public HomeController(ILogger logger, IUnitOfWork unitOfWork, IUserService userService,
-        ICategoryService categoryService)
+        ICategoryService categoryService, IHttpContextAccessor httpContextAccessor)
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
         _userService = userService;
         _categoryService = categoryService;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public IActionResult Index()
@@ -38,16 +41,22 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Settings()
     {
-        CurrentUserId = Guid.Parse("3ABAA456-0B8E-49E0-A6E9-1B79DBA2E38F");
-        var currentUser = await _userService.GetUser(CurrentUserId);
-        currentUser.Categories = await _categoryService.GetUserCategories(CurrentUserId);
-        return View(currentUser);
+        var userIdBytes = _httpContextAccessor.HttpContext.Session.Get("UserId");
+        if (userIdBytes != null)
+        {
+            var userIdString = Encoding.UTF8.GetString(userIdBytes);
+            var currentUser = await _userService.GetUser(currentUserId);
+            currentUser.Categories = await _categoryService.GetUserCategories(currentUserId);
+            return View(currentUser);
+        }
+
+        return Unauthorized();
     }
 
     [HttpPost]
     public async Task<IActionResult?> CreateCategory(CategoryDto category)
     {
-        category.UserId = CurrentUserId;
+        category.UserId = currentUserId;
 
         if (ModelState.IsValid)
         {
