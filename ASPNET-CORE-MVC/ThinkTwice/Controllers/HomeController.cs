@@ -45,7 +45,7 @@ public class HomeController : Controller
         if (userIdBytes != null)
         {
             var userIdString = Encoding.UTF8.GetString(userIdBytes);
-            var currentUser = await _userService.GetUser(currentUserId);
+            var currentUser = await _userService.GetUser(Guid.Parse(userIdString));
             currentUser.Categories = await _categoryService.GetUserCategories(currentUserId);
             return View(currentUser);
         }
